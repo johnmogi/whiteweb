@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Button, Form, Table } from "react-bootstrap";
+import TableBox from "./table";
 
-const API = "http://localhost:3000/contacts";
+const API = "http://localhost:3001/contacts";
 
 
 
@@ -72,6 +73,16 @@ class Main extends Component {
     this.setState({ [nam]: val });
   };
 
+  sortTd = (event) => {
+    let contacts = this.state.contacts
+console.log(contacts)
+contacts.sort(function(a, b) {
+  return a.id < b.id;
+});
+console.log(contacts)
+
+  }
+
   render() {
     return (
       <div className="Main container">
@@ -120,30 +131,25 @@ class Main extends Component {
           </Button>
         </Form>
 <br/>
+    <Table striped bordered hover className="col-6">
+    <thead>
+      <tr>
+       <th onClick={this.sortTd} id="num">#</th> 
+        <th >שם</th>
+        <th>טלפון</th>
+        <th>מייל</th>
+        <th>כתובת</th>
+      </tr>
+    </thead>
+    <tbody>
+{this.state.contacts.map(c =>
+                    <TableBox key={c.id} id={c.id} name={c.name}  mail={c.mail}  phone={c.phone} address={c.address}  />
+                    )}
+                    </tbody>
+                    </Table>
+
+      
         
-        <Table striped bordered hover className="col-6">
-          <thead>
-            <tr>
-             <th>#</th> 
-              <th>שם</th>
-              <th>טלפון</th>
-              <th>מייל</th>
-              <th>כתובת</th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.contacts.map((c) => (
-              <tr key={c.id}>
-            
-               <td>{c.id}</td> 
-                <td>{c.name}</td>
-                <td>{c.mail}</td>
-                <td>{c.phone}</td>
-                <td>{c.address}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
       </div>
     );
   }
